@@ -15,6 +15,11 @@ function SearchAndList() {
   const pokedex = pokedexJSON;
   const [filter, setFilter] = useState({ num: "", name: "", type: "" });
   const [data, setData] = useState(pokedex.pokemon);
+  const searchArray = [
+    { filter: filter.num, placeholder: "Search by Number", type: "num" },
+    { filter: filter.name, placeholder: "Search by Name", type: "name" },
+    { filter: filter.type, placeholder: "Search by Type", type: "type" }
+  ];
 
   const onFilterChange = (value, type) => {
     const newState = {
@@ -39,30 +44,18 @@ function SearchAndList() {
   return (
     <div>
       <tr>
-        <td>
-          <Search
-            filter={filter.num}
-            handleFilterChange={onFilterChange}
-            placeholder="Search by Number"
-            searchType="num"
-          />
-        </td>
-        <td>
-          <Search
-            filter={filter.name}
-            handleFilterChange={onFilterChange}
-            placeholder="Search by Name"
-            searchType="name"
-          />
-        </td>
-        <td>
-          <Search
-            filter={filter.type}
-            handleFilterChange={onFilterChange}
-            placeholder="Search by Type"
-            searchType="type"
-          />
-        </td>
+        {searchArray.map((obj, i) => {
+          return (
+            <td key={i}>
+              <Search
+                filter={obj.filter}
+                handleFilterChange={onFilterChange}
+                placeholder={obj.placeholder}
+                searchType={obj.type}
+              />
+            </td>
+          );
+        })}
       </tr>
       <List pokedex={data} />
     </div>
@@ -70,7 +63,7 @@ function SearchAndList() {
 }
 
 function Search(props) {
-  const searchType = props.searchType;
+  const { searchType } = props;
   const type = searchType === "num" ? "number" : "text";
 
   return (
@@ -86,7 +79,7 @@ function Search(props) {
 }
 
 function List(props) {
-  const pokedex = props.pokedex;
+  const { pokedex } = props;
 
   return (
     <div>
